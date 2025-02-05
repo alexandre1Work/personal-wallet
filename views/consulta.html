@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Orçamento pessoal</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/90a969b901.js" crossorigin="anonymous"></script>
 </head>
@@ -14,7 +14,7 @@
                 <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
             </a>
             <div class="navbar-menu">
-              <button class="nav-button btn-1" onclick="window.location.href='index.html'">Cadastro</button>
+              <button class="nav-button btn-1" onclick="window.location.href='/index.html'">Cadastro</button>
               <button class="nav-button active btn-1" onclick="window.location.href='consulta.html'">Consulta</button>
           </div>
           
@@ -22,13 +22,13 @@
     </nav>
 
     <div class="containerBody">
-        <h1><i class="fa-regular fa-folder-open"></i>&nbsp; Consulta de despesas</h1>
+        <h1><i class="fa-regular fa-folder-open"></i>&nbsp; Consultar despesa</h1>
         <div class="form-group">
 
             <div class="containerA">
                 <select id="ano" class="filhoA">
                     <option value="">Ano</option>
-                    <option value="2018">2018</option>
+                    <option value="2025">2025</option>
                 </select>
                 <select id="mes" class="filhoA">
                     <option value="">Mês</option>
@@ -79,5 +79,7 @@
             </tbody>
         </table>
     </div>
+
+    <script src="/assets/js/app.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Orçamento pessoal</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/90a969b901.js" crossorigin="anonymous"></script>
     
@@ -15,20 +15,20 @@
             </a>
             <div class="navbar-menu">
                 <button class="nav-button active btn-1" onclick="window.location.href='index.html'">Cadastro</button>
-                <button class="nav-button btn-1" onclick="window.location.href='consulta.html'">Consulta</button>
+                <button class="nav-button btn-1" onclick="window.location.href='views/consulta.html'">Consulta</button>
             </div>
 
         </div>
     </nav>
 
     <div class="containerBody">
-        <h1><i class="fa-solid fa-square-plus"></i>&nbsp; Registro de nova despesa</h1>
+        <h1><i class="fa-solid fa-square-plus"></i>&nbsp; Registrar despesa</h1>
         <div class="form-group">
 
             <div class="containerA">
                 <select id="ano" class="filhoA">
                     <option value="">Ano</option>
-                    <option value="2018">2018</option>
+                    <option value="2025">2025</option>
                 </select>
                 <select id="mes" class="filhoA">
                     <option value="">Mês</option>
@@ -59,11 +59,13 @@
             <div class="containerB">
                 <input type="text" placeholder="Descrição" id="descricao" class="filhoB">
                 <input type="text" placeholder="Valor" id="valor" class="filhoB">
-                <button type="button" class="btn-primary" class="filhoB">
-                    <i class="fas fa-search"></i>
+                <button type="button" class="btn-primary" class="filhoB" onclick="cadastrarDespesa()">
+                    <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
         </div>
     </div>
+
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
