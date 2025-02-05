@@ -1,0 +1,83 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Orçamento pessoal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/90a969b901.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="containerMenu">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
+            </a>
+            <div class="navbar-menu">
+              <button class="nav-button btn-1" onclick="window.location.href='index.html'">Cadastro</button>
+              <button class="nav-button active btn-1" onclick="window.location.href='consulta.html'">Consulta</button>
+          </div>
+          
+        </div>
+    </nav>
+
+    <div class="containerBody">
+        <h1><i class="fa-regular fa-folder-open"></i>&nbsp; Consulta de despesas</h1>
+        <div class="form-group">
+
+            <div class="containerA">
+                <select id="ano" class="filhoA">
+                    <option value="">Ano</option>
+                    <option value="2018">2018</option>
+                </select>
+                <select id="mes" class="filhoA">
+                    <option value="">Mês</option>
+                    <option value="1">Janeiro</option>
+                    <option value="2">Fevereiro</option>
+                    <option value="3">Março</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Maio</option>
+                    <option value="6">Junho</option>
+                    <option value="7">Julho</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+                <input type="text" placeholder="Dia" id="dia" class="filhoA">
+                <select id="tipo" class="filhoA">
+                    <option>Tipo</option>
+                    <option value="1">Alimentação</option>
+                    <option value="2">Educação</option>
+                    <option value="3">Lazer</option>
+                    <option value="4">Saúde</option>
+                    <option value="5">Transporte</option>
+                </select>
+            </div>
+
+            <div class="containerB">
+                <input type="text" placeholder="Descrição" id="descricao" class="filhoB">
+                <input type="text" placeholder="Valor" id="valor" class="filhoB">
+                <button type="button" class="btn-primary" class="filhoB">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
