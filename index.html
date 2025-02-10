@@ -60,9 +60,20 @@
             <div class="containerB">
                 <input type="text" placeholder="Descrição" id="descricao" class="filhoB">
                 <input type="text" placeholder="Valor" id="valor" class="filhoB">
-                <button type="button" class="btn-primary" class="filhoB" onclick="cadastrarDespesa()">
+                <button id="abrirModal" type="button" class="btn-primary" class="filhoB" >
                     <i class="fa-solid fa-plus"></i>
                 </button>
+            </div>
+            <div id="meuModal" class="modal">
+                <div class="modal-conteudo">
+                    <span class="fechar">&times;</span>
+
+                    <h2 id="modalTitulo"></h2>
+                    <p id="modalTexto"></p>
+                    
+                    <button id="voltarCorrigir" style="display: none;" class="btn-erro">voltar e corrigir</button>
+                    <button id="continuar" style="display: none;" class="btn-sucesso">continuar</button>
+                </div>
             </div>
         </div>
     </div>
