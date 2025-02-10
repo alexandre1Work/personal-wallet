@@ -30,9 +30,14 @@ class BD {
     }
 
     //pega o proximo id
-    getProximoiD(){
-        let proximoId = localStorage.getItem('id'); //começando em 0
-        return parseInt(proximoId) + 1 // será o id atual
+    getProximoiD() {
+        let proximoId = localStorage.getItem('id');
+    
+        if (!proximoId || isNaN(proximoId)) {
+            localStorage.setItem('id', 0); // Garante que começa do 0 caso esteja inválido
+            return 1;
+        }
+        return parseInt(proximoId) + 1;
     }
     
     gravar(d) {
@@ -44,11 +49,32 @@ class BD {
         let id = this.getProximoiD();
 
         //vai cadastrar no id especificado
-        localStorage.setItem('dado_' + id, JSON.stringify(d));
+        localStorage.setItem(id, JSON.stringify(d));
 
         //atualizar o valor do id
         localStorage.setItem('id', id)
 
+    }
+
+    recuperarTodosRegistros() {
+       
+        let despesas = Array();
+
+        let id = parseInt(localStorage.getItem('id')) || 0;;
+
+        //recupera todas as despesas em localStorage
+        for (let i = 1; i <= id; i++) {
+            //recupera a despesa
+            let despesa = JSON.parse(localStorage.getItem(i));
+
+            if (despesa === null) {
+                continue
+            }
+
+            despesas.push(despesa)
+        }
+
+        return despesas
     }
 }
 
@@ -83,6 +109,14 @@ function cadastrarDespesa() {
         voltarCorrigir.style.display = "none"; // Esconde o botão "Voltar e corrigir"
         continuar.style.display = "block"; // Exibe o botão "Continuar"
         continuar.style.backgroundColor = "green";
+
+        // Limpa os campos de entrada
+        document.getElementById('ano').value = "";
+        document.getElementById('mes').value = "";
+        document.getElementById('dia').value = "";
+        document.getElementById('tipo').value = "";
+        document.getElementById('descricao').value = "";
+        document.getElementById('valor').value = "";
     } else {
         //erro
         modalTitulo.innerHTML = "ERRO! ❌";
@@ -104,26 +138,60 @@ let span = document.getElementsByClassName('fechar')[0];
 let voltarCorrigir = document.getElementById('voltarCorrigir');
 let continuar = document.getElementById('continuar');
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-voltarCorrigir.onclick = function() {
-    modal.style.display = "none";
-}
-
-continuar.onclick = function() {
-    modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+if (modal) {
+    if (span) {
+        span.onclick = () => modal.style.display = "none";
     }
-} 
+    if (voltarCorrigir) {
+        voltarCorrigir.onclick = () => modal.style.display = "none";
+    }
+    if (continuar) {
+        continuar.onclick = () => modal.style.display = "none";
+    }
 
-btn.onclick = function() {
-    cadastrarDespesa();
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
 }
+
+if (btn) {
+    btn.onclick = function() {
+        cadastrarDespesa();
+    }
+}
+
+//executa a função toda vez que recarregar a página
+window.onload = function carregarListaDesesas() {
+     
+    let despesas = Array();
+    
+    despesas = bd.recuperarTodosRegistros()
+
+    let listaDespesas = document.getElementById('listaDespesas');
+
+    if (!listaDespesas) return; // Se a tabela não existe, não executa
+
+    despesas.forEach(d => {
+        //inserindo as linhas 
+        let linha = listaDespesas.insertRow();
+
+        linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`;
+
+        let tipos = {
+            '1': 'Alimentação',
+            '2': 'Educação',
+            '3': 'Lazer',
+            '4': 'Saúde',
+            '5': 'Transporte'
+        };
+
+        linha.insertCell(1).innerHTML = tipos[d.tipo] || Outro;
+        linha.insertCell(2).innerHTML = d.descricao;
+        linha.insertCell(3).innerHTML = `R$ ${parseFloat(d.valor).toFixed(2)}`;
+
+    });
+};
 
 
