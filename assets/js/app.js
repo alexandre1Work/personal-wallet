@@ -48,12 +48,11 @@ class BD {
         //pega o id atual
         let id = this.getProximoiD();
 
-        //vai cadastrar no id especificado
-        localStorage.setItem(id, JSON.stringify(d));
-
         //atualizar o valor do id
         localStorage.setItem('id', id)
 
+        //vai cadastrar no id especificado
+        localStorage.setItem(id, JSON.stringify(d));
     }
 
     recuperarTodosRegistros() {
@@ -67,14 +66,53 @@ class BD {
             //recupera a despesa
             let despesa = JSON.parse(localStorage.getItem(i));
 
-            if (despesa === null) {
-                continue
+            if (despesa != null) {
+                despesas.push(despesa)
             }
-
-            despesas.push(despesa)
         }
 
-        return despesas
+        return despesas;
+    }
+
+    pesquisar(despesa) {
+
+        //declarando um array
+        let despesasFiltradas = Array()
+        
+        //selecionando todos os intem do localStorage e atribuindo a uum array
+        despesasFiltradas = this.recuperarTodosRegistros();
+
+        //filtro ano 
+        if (despesa.ano != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
+        }
+
+        //filtro mes
+        if (despesa.mes != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
+        }
+
+        //filtro tipo
+        if (despesa.tipo != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
+        }
+
+        //filtro descricao
+        if (despesa.descricao != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+        } 
+
+        //filtro valor
+        if (despesa.valor != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+        }
+
+        // Se não encontrou nada, retorna null
+        if (despesasFiltradas.length === 0) {
+            return null;
+        }
+
+        return despesasFiltradas
     }
 }
 
@@ -163,13 +201,21 @@ if (btn) {
 }
 
 //executa a função toda vez que recarregar a página
-window.onload = function carregarListaDesesas() {
-     
-    let despesas = Array();
+function carregarListaDesesas(despesas = Array(), filtro = false) {
     
-    despesas = bd.recuperarTodosRegistros()
+    if (despesas.length == 0 && filtro == false) {
+        despesas = bd.recuperarTodosRegistros()
+    }
+
+    if (!Array.isArray(despesas)) {
+        despesas = [];
+    }
 
     let listaDespesas = document.getElementById('listaDespesas');
+    
+    if (listaDespesas) {
+        listaDespesas.innerHTML =  '';
+    }
 
     if (!listaDespesas) return; // Se a tabela não existe, não executa
 
@@ -187,11 +233,44 @@ window.onload = function carregarListaDesesas() {
             '5': 'Transporte'
         };
 
-        linha.insertCell(1).innerHTML = tipos[d.tipo] || Outro;
+        linha.insertCell(1).innerHTML = tipos[d.tipo] || 'Outro';
         linha.insertCell(2).innerHTML = d.descricao;
         linha.insertCell(3).innerHTML = `R$ ${parseFloat(d.valor).toFixed(2)}`;
 
     });
 };
+
+window.onload = function() {
+    carregarListaDesesas();
+}
+
+function pesquisarDespesa() {
+        //seleciona os ids
+        let ano = document.getElementById('ano').value
+        let mes = document.getElementById('mes').value
+        let dia = document.getElementById('dia').value
+        let tipo = document.getElementById('tipo').value
+        let descricao = document.getElementById('descricao').value
+        let valor = document.getElementById('valor').value
+
+        let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
+
+        let despesas = bd.pesquisar(despesa)
+
+        if (despesas === null) {
+            let listaDespesas = document.getElementById('listaDespesas');
+            listaDespesas.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;"><i class="fa-solid fa-magnifying-glass"></i> Nenhuma despesa encontrada</td></tr>';
+        } else {
+            carregarListaDesesas(despesas);
+        }
+}
+
+//função para recuperar infomações ao clicar no botao pesquisar
+pesquisar = document.getElementById('pesquisar')
+
+pesquisar.onclick = function() {
+    pesquisarDespesa()
+}
+
 
 
