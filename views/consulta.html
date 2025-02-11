@@ -49,7 +49,7 @@
                     <option value="11">Novembro</option>
                     <option value="12">Dezembro</option>
                 </select>
-                <input type="text" placeholder="Dia" id="dia" class="filhoA">
+                <input type="number" placeholder="Dia" id="dia" class="filhoA">
                 <select id="tipo" class="filhoA">
                     <option value="">Tipo</option>
                     <option value="1">Alimentação</option>
@@ -62,7 +62,7 @@
 
             <div class="containerB">
                 <input type="text" placeholder="Descrição" id="descricao" class="filhoB">
-                <input type="text" placeholder="Valor" id="valor" class="filhoB">
+                <input type="number" placeholder="Valor" id="valor" class="filhoB" >
                 <button id="pesquisar" type="button" class="btn-primary" class="filhoB">
                     <i class="fas fa-search"></i>
                 </button>
@@ -77,6 +77,16 @@
                     <th>Descrição</th>
                     <th>Valor</th>
                     <th></th>
+                    <div id="meuModal" class="modal">
+                        <div class="modal-conteudo">
+                            <span class="fechar">&times;</span>
+        
+                            <h2 id="modalTitulo"></h2>
+                            <p id="modalTexto"></p>
+
+                            <button style="display: none;" class="btn-sucesso btnDelete">Sim, remover despesa</button>
+                        </div>
+                    </div>
                 </tr>
             </thead>
             <tbody id="listaDespesas">

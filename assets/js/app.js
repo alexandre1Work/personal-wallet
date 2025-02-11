@@ -67,6 +67,7 @@ class BD {
             let despesa = JSON.parse(localStorage.getItem(i));
 
             if (despesa != null) {
+                despesa.id = i
                 despesas.push(despesa)
             }
         }
@@ -92,19 +93,34 @@ class BD {
             despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
         }
 
+        //filtro dia
+        if (despesa.dia != '') {
+            despesasFiltradas = despesasFiltradas.filter(d => {
+                // Remove o zero à esquerda e compara
+                return d.dia.toString().padStart(2, '0') == despesa.dia.toString().padStart(2, '0');
+            });
+        }
+
         //filtro tipo
         if (despesa.tipo != '') {
             despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
         }
 
         //filtro descricao
-        if (despesa.descricao != '') {
-            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
-        } 
+        if (despesa.descricao.trim() != '') {
+            let descricaoPesquisa = despesa.descricao.trim().toLowerCase();
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao.trim().toLowerCase().includes(descricaoPesquisa));
+        }
 
         //filtro valor
         if (despesa.valor != '') {
-            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+            despesasFiltradas = despesasFiltradas.filter(d => {
+                // Normaliza o valor da despesa e o valor da pesquisa
+                let valorD = parseFloat(d.valor.toString().replace(',', '.')).toFixed(2);
+                let valorPesquisa = parseFloat(despesa.valor.toString().replace(',', '.')).toFixed(2);
+                
+                return valorD == valorPesquisa;
+            });
         }
 
         // Se não encontrou nada, retorna null
@@ -113,6 +129,10 @@ class BD {
         }
 
         return despesasFiltradas
+    }
+
+    remover(id) {
+        localStorage.removeItem(id);
     }
 }
 
@@ -237,6 +257,16 @@ function carregarListaDesesas(despesas = Array(), filtro = false) {
         linha.insertCell(2).innerHTML = d.descricao;
         linha.insertCell(3).innerHTML = `R$ ${parseFloat(d.valor).toFixed(2)}`;
 
+        //botão de exclusão
+        btn =  document.createElement("button")
+        btn.innerHTML = '<i class="fa-solid fa-delete-left"></i>'
+        btn.classList.add("buttonDelete")
+        btn.id = `id_despesa_${d.id}`;
+        btn.onclick = function() {
+            modalDelete(this.id)
+        }
+        linha.insertCell(4).append(btn);
+
     });
 };
 
@@ -251,7 +281,7 @@ function pesquisarDespesa() {
         let dia = document.getElementById('dia').value
         let tipo = document.getElementById('tipo').value
         let descricao = document.getElementById('descricao').value
-        let valor = document.getElementById('valor').value
+        let valor = document.getElementById('valor').value;
 
         let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
 
@@ -270,6 +300,53 @@ pesquisar = document.getElementById('pesquisar')
 
 pesquisar.onclick = function() {
     pesquisarDespesa()
+}
+
+function modalDelete(id) {
+    let modalTitulo = document.getElementById('modalTitulo');
+    let modalTexto = document.getElementById('modalTexto');
+    let modal = document.getElementById('meuModal'); //clicar fora
+    let btnDelete = document.getElementsByClassName('btnDelete'); //btn
+    let span = document.getElementsByClassName('fechar')[0]; //x
+
+    if (btnDelete.length > 0) {
+        btnDelete[0].style.display = "block"; // Esconde o botão "Voltar e corrigir"
+        btnDelete[0].style.backgroundColor = "#EAB308";
+        
+        //botão de confimação
+        btnDelete[0].onclick = function() {
+            removerDespesa()
+        }
+
+        function removerDespesa() {
+            //fecha o modal
+            modal.style.display = "none";
+            
+            //remove o modal
+            let idFormatada = id.replace('id_despesa_', '')
+
+            bd.remover(idFormatada);
+            window.location.reload();
+        }
+    }
+
+    modalTitulo.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Atenção';
+    modalTitulo.style.color = "#EAB308";  
+    modalTexto.innerHTML = "Tem certeza que deseja excluir essa despesa ?";
+    
+    modal.style.display = "block";
+
+    if (modal) {
+        if (span) {
+            span.onclick = () => modal.style.display = "none";
+        }
+    
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    }
 }
 
 

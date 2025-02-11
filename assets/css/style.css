@@ -255,6 +255,19 @@ h1 {
     height: 100%;
 }
 
+.buttonDelete{
+    background-color: #b4b1ff;
+    border: none;
+    color: red;
+    font-size: 24px;
+}
+
+.buttonDelete:hover{
+    background-color: #F87171;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 table {
     width: 99%;
     border-collapse: collapse;
@@ -268,7 +281,7 @@ table, th, td {
 
 th, td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 th {
