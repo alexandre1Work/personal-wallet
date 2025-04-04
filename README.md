@@ -2,9 +2,8 @@
 
 Este projeto é um sistema de controle de despesas, desenvolvido utilizando HTML, CSS e JavaScript. Ele permite cadastrar e consultar despesas de forma organizada e eficiente.
 
----
 
-🎮 **[Acesse a carteira!](https://personalwalletone.netlify.app/)**
+💼 **[Acesse a carteira!](https://personalwalletone.netlify.app/)**
 
 ---
 📌 Funcionalidades
